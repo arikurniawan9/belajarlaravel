@@ -1,0 +1,42 @@
+<?php
+
+namespace App\Http\Controllers;
+use App\Models\SiswaModel;
+
+use Illuminate\Http\Request;
+
+class SiswaController extends Controller
+{
+    //index
+    public function index() {
+        //tampil data
+        $data = [
+            'dataSiswa' => SiswaModel::all()
+        ];
+        return View('siswa.data', $data);
+    }
+
+    public function create(){
+        //menuju form tambah
+        return View('siswa.tambahsiswa');
+    }
+
+    public function store(Request $r){
+        //simpan data
+        $r->validate([
+            'nis' => 'required|numeric',
+            'nama' => 'required',
+            'kelas' => 'required',
+            'alamat' => 'required'
+        ]);
+        $data =[
+            'nis' => $r->input('nis'),
+            'nama' => $r->input('nama'),
+            'kelas' => $r->input('kelas'),
+            'alamat' => $r->input('alamat')
+        ];
+        SiswaModel::create($data);
+        return redirect('siswa');
+
+    }
+}
